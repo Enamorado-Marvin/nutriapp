@@ -1,0 +1,155 @@
+/* New file */
+::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+    font-size: 14px;
+    background: #343a40;
+}
+
+.nav-link.active {
+    border-bottom: 2px solid #F68703 !important;
+}
+
+#visible{
+    display: none;
+}
+
+.contenedor {
+
+}
+
+h4.text-uppercase.titulo {
+    font-size: 14px;
+    text-align: center;
+}
+
+.itemsmenu{
+    font-weight: 500; 
+}
+
+
+.seleccion-leche{
+    border: none;
+}
+
+.seleccion-leche:focus{
+    outline: none;
+}
+
+.bordo-bajo{
+    border-color: #00D42A;
+    border-bottom-width: 2px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    padding-right: 5px;
+}
+.bordo-bajo:focus {
+    outline: none;
+}
+
+label.etiqueta.col-sm-4.col-form-label {
+    font-weight: normal;
+}
+
+.bg-verde{
+    background: #00D42A;
+}
+
+.project-tab #tabs .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: #fff;
+    background-color: transparent;
+    border-color: transparent transparent #f3f3f3;
+    border-bottom: 2px solid !important;
+    font-size: 16px;
+    font-weight: bold;
+    padding:10px 0;
+}
+.project-tab .nav-link {
+    border: 1px solid transparent;
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+    color: #EBEBEB;
+    font-size: 16px;
+    font-weight: 600;
+    padding:10px 0;
+}
+.project-tab .nav-link:hover {
+    border: none;
+}
+.project-tab thead{
+    background: #f3f3f3;
+    color: #333;
+}
+.project-tab a{
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+}
+
+.panel {
+    background-color: white;
+    padding: 10px 10px 10px 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.margen-abajo{
+    margin-bottom: 20px;
+}
+
+.col-form-label {
+    font-weight: normal !important;
+    margin-right: 10px;
+    width: 90px;
+    padding-left: 10px;
+    text-align: right;
+}
+
+.col-form-label2 {
+    font-weight: normal !important;
+    margin-right: 0px;
+    width: 150px;
+    padding-left: 5px;
+    text-align: right;
+}
+
+.naranja {
+    color: #fff;
+    background-color: #CC7814;
+    border-color: #CC7814;
+    border-radius: 20px;
+    transition: background-color .5s;
+}
+
+.naranja:hover {
+    background-color: #F68703;
+    border-color: #F68703;
+}
+
+.naranja:focus {
+    background-color: #F68703;
+    border-color: #F68703;
+}
+
+.naranja:active {
+    background-color: #F68703;
+    border-color: #F68703;
+}
+
+.seleccion {
+    width: 100px;
+}
+
+.table {
+    background-color: white !important;
+    width: 100%;
+    border: 1px solid #dee2e6;
+}
+
+tr.negrita {
+    font-weight: bold;
+    color: green;
+}

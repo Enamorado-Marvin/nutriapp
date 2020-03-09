@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Security-Policy" content="default-src gap://ready file://* *; style-src 'self' http://* https://* 'unsafe-inline'; script-src 'self' http://* https://* 'unsafe-inline' 'unsafe-eval'">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <title>Calculo De Macronutrientes</title>
+        <!-- Tell the browser to be responsive to screen width -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+        <!-- Ionicons -->
+        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+        <!-- overlayScrollbars -->
+        <link rel="stylesheet" href="dist/css/adminlte.css">
+        <!-- Google Font: Roboto -->
+        <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">      
+        <!-- Plugins de JavaScript -->
+        <script src="plugins/jquery/jquery.min.js"></script>
+        <!-- Bootstrap 4 -->
+        <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+        <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- Estilo del sitio -->
+        <link rel="stylesheet" href="css/index.css">
+    </head>
+    <body class="hold-transition sidebar-collapse sidebar-mini">
+        <!-- Site wrapper -->
+        <section id="tabs" class="project-tab bg-success">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col col-12 pt-2">
+                  <h6 class="text-center">NutriApp</h6>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <nav class="bg-success">
+                  <div class="nav nav-tabs nav-fill text-uppercase" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active bordo" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Calculo</a>
+                    <a class="nav-item nav-link bordo" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Distribución</a>
+                    <a class="nav-item nav-link bordo" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Alimentos</a>
+                 </div>
+                </nav>
+               </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div class="container">
+            <div class="tab-content" id="nav-tabContent">
+              <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <div class="panel">
+                  <h4 class="text-uppercase titulo margen-abajo">Cáculo de macronutrientes</h4>
+                  
+                  <div class="form-group row">
+                      <label for="ckal" class="col-form-label">KCAL</label>
+                      <div class="">
+                        <input type="number" class="bordo-bajo text-right" id="kcal" placeholder="Ej. 1800">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="cho" class="col-form-label">% CHO</label>
+                      <div class="">
+                        <input type="number" class="bordo-bajo text-right" id="cho" placeholder="entre 40-60">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="chon" class="col-form-label">% CHON</label>
+                      <div class="">
+                        <input type="number" class="bordo-bajo text-right" id="chon" placeholder="entre 10-30">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="cooh" class="col-form-label">% COOH</label>
+                      <div class="">
+                        <input type="number" class="bordo-bajo text-right" id="cooh" placeholder="entre 20-35">
+                      </div>
+                    </div>
+                    <p id="mensaje" class="alert-danger"></p>
+                    <div class="form-group row"> 
+                      <div class="col-sm-12">
+                        <button class="btn btn-primary btn-lg btn-block naranja" onclick="calcularMacronutrientes();">CALCULAR</button>
+                      </div>
+                    </div>
+                </div>
+                    <!-- Fin de ingreso de datos -->
+
+                    <!-- Resultados -->
+                    <section id="visible">
+                      <div class="panel">
+                      <h4 class="text-uppercase titulo margen-abajo">Resultados</h4>
+                      <div class="tabla">
+                       <table class="">
+                        <tr>
+                          <th scope="row"><span id="calcCho" class="text-success float-right"></span></th>
+                          <td>gr de CHO</td>
+                        </tr>
+                        <tr>
+                          <th scope="row"><span id="calcChon" class="text-success float-right"></span></th>
+                          <td>gr de CHON</td>
+                        </tr>
+                        <tr>
+                          <th scope="row"><span id="calcCooh" class="text-success float-right"></span></th>
+                          <td>gr de COOH</td>
+                        </tr>
+                      </table>
+                    </div>
+                    </div>                   
+                  </section>
+                </div>
+
+                <!-- Distribucion Macronutrientes -->
+                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                  <section class="">
+                    <div class="panel">
+                    <h4 class="text-uppercase titulo">Distribución de macronutrientes</h4>
+                    
+                    <div class="form-group row">
+                      <select id="lecheTipo" onchange="obtenerLeche()" class="seleccion-leche text-uppercase col-form-label2">
+                        <option>Leche Descremada</option>
+                        <option>Leche Semi-descremada</option>
+                        <option>Leche Entera</option>
+                      </select>
+                      <div class="seleccion">
+                        <select id="leche" class="bordo-bajo text-right float-right" onchange="valores();">
+                          <option value="0">0</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
+                          <option value="9">9</option>
+                          <option value="10">10</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="" class="col-form-label2">FRUTAS</label>
+                      <div class="seleccion">
+                        <select id="frutas" class="bordo-bajo text-right float-right" onchange="valores()">
+                          <option value="0">0</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
+                          <option value="9">9</option>
+                          <option value="10">10</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="" class="col-form-label2">VEGETALES</label>
+                      <div class="seleccion">
+                        <select id="vegetales" class="bordo-bajo text-right float-right" onchange="valores()">
+                          <option value="0">0</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
+                          <option value="9">9</option>
+                          <option value="10">10</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="" class="col-form-label2 etiqueta">CARNES SM</label>
+                      <div class="seleccion">
+                        <select id="carnes-sm" class="bordo-bajo text-right float-right" onchange="valores()">
+                          <option value="0">0</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
+                          <option value="9">9</option>
+                          <option value="10">10</option>
+                        </select>
+                      </div>
+                    </div>
+                    </div>
+                  </section>
+                  <!-- Fin de ingreso de datos -->
+
+                  <!-- Distribucion de Comidas -->
+
+                  <table class="table table-responsive w-100 d-block d-md-table">
+                    <thead class="bg-success">
+                      <tr>
+                        <th scope="col">Alimentos</th>
+                        <th scope="col">CHO: <span id="choPor"></span></th>
+                        <th scope="col">CHON: <span id="chonPor"></span></th>
+                        <th scope="col">COOH: <span id="coohPor"></span></th>
+                        <th scope="col"><span id="kcalPor"></span></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row"><span id="leche-select"></span></th>
+                        <td><span id="choLeche"></span></td>
+                        <td><span id="chonLeche"></span></td>
+                        <td><span id="coohLeche"></span></td>
+                        <td><span id="totalLeche"></span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Frutas</th>
+                        <td><span id="choFrutas"></span></td>
+                        <td><span id="chonFrutas"></span></td>
+                        <td><span id="coohFrutas"></span></td>
+                        <td><span id="totalFrutas"></span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Vegetales</th>
+                        <td><span id="choVegetales"></span></td>
+                        <td><span id="chonVegetales"></span></td>
+                        <td><span id="coohVegetales"></span></td>
+                        <td><span id="totalVegetales"></span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Almidones <span id="almidones" class="badge badge-success"></span></th>
+                        <td><span id="choAlmidones"></span></td>
+                        <td><span id="chonAlmidones"></span></td>
+                        <td><span id="coohAlmidones"></span></td>
+                        <td><span id="totalAlmidones"></span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Carne Magra <span id="carneM" class="badge badge-success"></span></th>
+                        <td><span id="choCarneM"></span></td>
+                        <td><span id="chonCarneM"></span></td>
+                        <td><span id="coohCarneM"></span></td>
+                        <td><span id="totalCarneM"></span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Carne SM</th>
+                        <td><span id="choCarneSm"></span></td>
+                        <td><span id="chonCarneSm"></span></td>
+                        <td><span id="coohCarneSm"></span></td>
+                        <td><span id="totalCarneSm"></span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Grasa <span id="grasa" class="badge badge-success"></span></th>
+                        <td><span id="choGrasa"></span></td>
+                        <td><span id="chonGrasa"></span></td>
+                        <td><span id="coohGrasa"></span></td>
+                        <td><span id="totalGrasa"></span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Total</th>
+                        <td><span id="choTotales"></span></td>
+                        <td><span id="chonTotales"></span></td>
+                        <td><span id="coohTotales"></span></td>
+                        <td><span id="totalTotales"></span></td>
+                      </tr>    
+                      <tr>
+                        <th scope="row">Margen de Error</th>
+                        <td><span id="choMargen"></span></td>
+                        <td><span id="chonMargen"></span></td>
+                        <td><span id="coohMargen"></span></td>
+                        <td><span id="totalMargen"></span></td>
+                      </tr> 
+                      <tr>
+                        <th scope="row"></th>
+                        <td class="font-weight-bold">± 8 gr</td>
+                        <td class="font-weight-bold">± 5 gr</td>
+                        <td class="font-weight-bold">± 3 gr</td>
+                        <td class="font-weight-bold">± 100 Kcal</td>
+                      </tr> 
+                    </tbody>
+                  </table>
+                  <!-- Fin resultados -->
+                  <!-- Link Distribucion de Alimentos -->
+                  <!-- <a href="#" class="text-uppercase" id="visible">Ir a Distribucion de Comidas</a> -->
+                </div>
+                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                  <div class="panel">
+                    <h4 class="text-uppercase titulo">Distribución de Comidas</h4>
+                  </div>
+                  <table class="table table-responsive w-100 d-block d-md-table">
+                    <thead class="bg-success">
+                      <tr>
+                        <th scope="col">Alimentos</th>
+                        <th scope="col" colspan="2">Desayuno</th>
+                        <th scope="col" colspan="2">M1</th>
+                        <th scope="col" colspan="2">Almuerzo</th>
+                        <th scope="col" colspan="2">M2</th>
+                        <th scope="col" colspan="2">Cena</th>
+                        <th scope="col">Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- Comienzo Frutas -->
+                      <tr>
+                        <th scope="row"><span id="leche-select2"></span></th>
+                        <td>
+                          <select id="leNum" onchange="valores(); obetenerLeche()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="leKcal"></span></td>
+                        <td>
+                          <select id="leNum2" onchange="valores(); obetenerLeche()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="leKcal2"></span></td>
+                        <td>
+                          <select id="leNum3" onchange="valores(); obetenerLeche()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="leKcal3" onchange="valores()"></span></td>
+                        <td>
+                          <select id="leNum4" onchange="valores(); obetenerLeche()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="leKcal4"></span></td>
+                        <td>
+                          <select id="leNum5" onchange="valores(); obetenerLeche()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="leKcal5"></span></td>
+                        <td><span id="totalLe"></span></td>
+                      </tr>
+                      <!-- Fin Leche -->
+                      <!-- Comienzo Frutas -->
+                      <tr>
+                        <th scope="row">Frutas</th>
+                        <td>
+                          <select id="fruNum1" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="fruKcal1"></span></td>
+                        <td>
+                          <select id="fruNum2" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="fruKcal2"></span></td>
+                        <td>
+                          <select id="fruNum3" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="fruKcal3"></span></td>
+                        <td>
+                          <select id="fruNum4" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="fruKcal4"></span></td>
+                        <td>
+                          <select id="fruNum5" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="fruKcal5"></span></td>
+                        <td><span id="totalFru"></span></td>
+                      </tr>
+                      <!-- Fin Frutas -->
+                      <!-- Comienzo vegetales -->
+                      <tr>
+                        <th scope="row">Vegetales</th>
+                        <td>
+                          <select id="vegNum1" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="vegKcal1"></span></td>
+                        <td>
+                          <select id="vegNum2" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="vegKcal2"></span></td>
+                        <td>
+                          <select id="vegNum3" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="vegKcal3"></span></td>
+                        <td>
+                          <select id="vegNum4" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="vegKcal4"></span></td>
+                        <td>
+                          <select id="vegNum5" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="vegKcal5"></span></td>
+                        <td><span id="totalVeg"></span></td>
+                      </tr>
+                      <!--Fin Vegetales -->
+                      <!-- Comienzo de almidones -->
+                      <tr>
+                        <th scope="row">Almidones</th>
+                        <td>
+                          <select id="almNum1" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="almKcal1"></span></td>
+                        <td>
+                          <select id="almNum2" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="almKcal2"></span></td>
+                        <td>
+                          <select id="almNum3" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="almKcal3"></span></td>
+                        <td>
+                          <select id="almNum4" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="almKcal4"></span></td>
+                        <td>
+                          <select id="almNum5" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="almKcal5"></span></td>
+                        <td><span id="totalAlm"></span></td>
+                      </tr>
+                      <!--Fin Almidones -->
+                      <!-- Comienzo de Carne Magra -->
+                      <tr>
+                        <th scope="row">Carne Magra</th>
+                        <td>
+                          <select id="cmNum1" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="cmKcal1"></span></td>
+                        <td>
+                          <select id="cmNum2" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="cmKcal2"></span></td>
+                        <td>
+                          <select id="cmNum3" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="cmKcal3"></span></td>
+                        <td>
+                          <select id="cmNum4" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="cmKcal4"></span></td>
+                        <td>
+                          <select id="cmNum5" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="cmKcal5"></span></td>
+                        <td><span id="totalCm"></span></td>
+                      </tr>
+                      <!--Fin Carne Magra -->
+                      <!-- Comienzo de Carne SemiMagra -->
+                      <tr>
+                        <th scope="row">Carne SM</th>
+                        <td>
+                          <select id="csmNum1" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="csmKcal1"></span></td>
+                        <td>
+                          <select id="csmNum2" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="csmKcal2"></span></td>
+                        <td>
+                          <select id="csmNum3" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="csmKcal3"></span></td>
+                        <td>
+                          <select id="csmNum4" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="csmKcal4"></span></td>
+                        <td>
+                          <select id="csmNum5" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="csmKcal5"></span></td>
+                        <td><span id="totalCsm"></span></td>
+                      </tr>
+                      <!--FinCarne SemiMagra -->
+                      <!-- Comienzo de Grasas -->
+                      <tr>
+                        <th scope="row">Grasa</th>
+                        <td>
+                          <select id="graNum1" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="graKcal1"></span></td>
+                        <td>
+                          <select id="graNum2" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="graKcal2"></span></td>
+                        <td>
+                          <select id="graNum3" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="graKcal3"></span></td>
+                        <td>
+                          <select id="graNum4" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="graKcal4"></span></td>
+                        <td>
+                          <select id="graNum5" onchange="valores()">
+                            <option value=0></option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                          </select>
+                        </td>
+                        <td><span id="graKcal5"></span></td>
+                        <td><span id="totalGra"></span></td>
+                      </tr>
+                      <tr class="negrita">
+                        <th scope="row">Total</th>
+                        <td colspan="2" align="center"><span id="sumDesayuno"></span></td>
+                        <td colspan="2" align="center"><span id="sumM1"></span></td>
+                        <td colspan="2" align="center"><span id="sumAlmuerzo"></span></td>
+                        <td colspan="2" align="center"><span id="sumM2"></span></td>
+                        <td colspan="2" align="center"><span id="sumCena"></span></td>
+                        <td colspan="2" align="center"><span id="sumKcals"></span></td>                
+                      </tr>    
+                      <tr>
+                        <th scope="row">Porcentajes</th>
+                        <td colspan="2" align="center"><span id="porDesayuno"></span></td>
+                        <td colspan="2" align="center"><span id="porM1"></span></td>
+                        <td colspan="2" align="center"><span id="porAlmuerzo"></span></td>
+                        <td colspan="2" align="center"><span id="porM2"></span></td>
+                        <td colspan="2" align="center"><span id="porCena"></span></td>
+                        <td colspan="2" align="center"><span id="porKcals"></span></td> 
+                      </tr> 
+                      <tr>
+                        <th scope="row"></th>
+                        <td class="font-weight-bold" colspan="2">25 - 30 %</td>
+                        <td class="font-weight-bold" colspan="2">5 - 15 %</td>
+                        <td class="font-weight-bold" colspan="2">25 - 40 %</td>
+                        <td colspan="2"></td>
+                        <td class="font-weight-bold" colspan="2">20 - 25 %</td>
+                        <td class="font-weight-bold" colspan="2">> 99.91%</td>
+                      </tr> 
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+        </div>
+        </section>
+        </div>
+        
+        <!-- <script type="text/javascript" src="cordova.js"></script> -->
+        <script type="text/javascript" src="js/index.js"></script>
+        
+    </body>
+</html>
